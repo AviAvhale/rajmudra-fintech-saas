@@ -1,7 +1,5 @@
 # Dependencies
 node_modules/
-rajmudra-app/node_modules/
-rajmudra-server/node_modules/
 
 # Environment variables
 .env
@@ -25,6 +23,29 @@ desktop.ini
 .vscode/
 .idea/
 
-# Temp files
+# Temp / Scratch files
 fix_live.py
 *.tmp
+
+# Old standalone HTML files (not part of React app)
+*.html
+!rajmudra-app/**/*.html
+
+# Documents & Presentations
+*.pdf
+*.docx
+*.pptx
+PRESENTATION
+graph.txt
+
+# Images not in source
+text-*.png
+
+# Batch scripts
+*.bat
+
+# Postman
+*Postman*.json
+
+# Presentation assets folder
+Rajmudra Fintech*
