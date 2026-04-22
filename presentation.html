@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rajmudra Fintech — SaaS Platform Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#050505;--card:#0e0e0e;--card2:#161616;--border:#1e1e1e;
+  --gold:#c9a84c;--gold-light:#d4bc6a;--gold-dim:rgba(201,168,76,0.15);
+  --white:#f5f5f5;--silver:#b0b0b0;--muted:#666;
+  --green:#2ecc71;--red:#e74c3c;--blue:#6495ed;
+  --font-heading:'Playfair Display',Georgia,serif;
+  --font-body:'Inter','Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;background:var(--black);color:var(--white);font-family:var(--font-body)}
+
+/* ─── Slide Container ─── */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:center;padding:60px 80px;
+  opacity:0;transform:translateX(60px);transition:opacity .5s ease,transform .5s ease;
+  pointer-events:none;
+  background:var(--black);
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.slide.prev{opacity:0;transform:translateX(-60px)}
+
+/* ─── Background Effects ─── */
+.slide::before{
+  content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%);
+  pointer-events:none;border-radius:50%;
+}
+.slide::after{
+  content:'';position:absolute;bottom:-150px;left:-150px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(201,168,76,0.03) 0%,transparent 70%);
+  pointer-events:none;border-radius:50%;
+}
+
+/* ─── Typography ─── */
+.slide-tag{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);
+  font-weight:600;margin-bottom:12px;display:inline-block;
+  padding:4px 14px;border:1px solid rgba(201,168,76,0.3);border-radius:20px;
+  background:rgba(201,168,76,0.06);
+}
+.slide h1{
+  font-family:var(--font-heading);font-size:52px;font-weight:900;
+  line-height:1.15;margin-bottom:16px;color:var(--white);
+}
+.slide h1 em{color:var(--gold);font-style:italic}
+.slide h2{
+  font-family:var(--font-heading);font-size:36px;font-weight:700;
+  line-height:1.2;margin-bottom:20px;
+}
+.slide h2 em{color:var(--gold);font-style:italic}
+.slide h3{font-family:var(--font-heading);font-size:22px;font-weight:700;margin-bottom:12px}
+.slide h3 em{color:var(--gold);font-style:italic}
+.slide p{font-size:16px;line-height:1.7;color:var(--silver);max-width:800px}
+.slide .subtitle{font-size:18px;color:var(--silver);margin-bottom:28px}
+.slide .tagline{
+  font-family:var(--font-heading);font-style:italic;font-size:20px;
+  color:var(--gold);margin-top:12px;
+}
+
+/* ─── Lists ─── */
+.slide ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.slide ul li{
+  font-size:15px;line-height:1.6;color:var(--silver);
+  padding-left:20px;position:relative;
+}
+.slide ul li::before{
+  content:'▸';position:absolute;left:0;color:var(--gold);font-weight:700;
+}
+.slide ul li strong{color:var(--white);font-weight:600}
+
+/* ─── Grid Layouts ─── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
+
+/* ─── Cards ─── */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:24px;position:relative;
+}
+.card.gold-border{border-color:rgba(201,168,76,0.3)}
+.card-icon{font-size:28px;margin-bottom:12px;display:block}
+.card h4{font-family:var(--font-heading);font-size:16px;font-weight:700;margin-bottom:8px;color:var(--white)}
+.card p{font-size:13px;line-height:1.6;color:var(--muted)}
+
+/* ─── Stat Cards ─── */
+.stat{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:20px;text-align:center;
+}
+.stat-icon{font-size:24px;display:block;margin-bottom:8px}
+.stat-value{
+  font-family:var(--font-heading);font-size:28px;font-weight:900;
+  color:var(--white);display:block;
+}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;display:block}
+
+/* ─── Tables ─── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{
+  text-align:left;padding:10px 14px;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(201,168,76,0.2);
+  font-weight:600;
+}
+.tbl td{
+  padding:10px 14px;border-bottom:1px solid var(--border);color:var(--silver);
+  vertical-align:top;
+}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td strong{color:var(--white)}
+
+/* ─── Code ─── */
+.code-block{
+  background:#0c0c0c;border:1px solid var(--border);border-radius:10px;
+  padding:20px 24px;font-family:var(--font-mono);font-size:12px;
+  line-height:1.7;color:var(--silver);overflow-x:auto;white-space:pre;
+}
+.code-block .kw{color:var(--gold)}
+.code-block .cm{color:#555}
+.code-block .str{color:var(--green)}
+.code-block .fn{color:var(--blue)}
+
+/* ─── Badges ─── */
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;
+  font-weight:600;letter-spacing:0.5px;
+}
+.badge-gold{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+.badge-green{background:rgba(46,204,113,0.1);color:var(--green);border:1px solid rgba(46,204,113,0.3)}
+.badge-red{background:rgba(231,76,60,0.1);color:var(--red);border:1px solid rgba(231,76,60,0.3)}
+.badge-blue{background:rgba(100,149,237,0.1);color:var(--blue);border:1px solid rgba(100,149,237,0.3)}
+
+/* ─── Flow Diagram ─── */
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.flow-step{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:10px 16px;font-size:12px;color:var(--silver);
+}
+.flow-step.highlight{border-color:rgba(201,168,76,0.4);color:var(--gold)}
+.flow-arrow{color:var(--gold);font-size:18px}
+
+/* ─── Progress Bar ─── */
+.prog{margin-bottom:12px}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.prog-label span:first-child{color:var(--silver)}
+.prog-label span:last-child{color:var(--gold);font-weight:600}
+.prog-bar{height:6px;background:var(--card2);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width 1s ease}
+
+/* ─── Special: Title Slide ─── */
+.title-slide{text-align:center;justify-content:center;align-items:center}
+.title-slide h1{font-size:64px;margin-bottom:8px}
+.title-slide .subtitle{font-size:20px;max-width:700px;text-align:center}
+.title-slide .tech-pills{display:flex;gap:12px;margin-top:20px;justify-content:center;flex-wrap:wrap}
+.title-slide .tech-pill{
+  padding:6px 16px;border:1px solid var(--border);border-radius:20px;
+  font-size:12px;color:var(--silver);background:var(--card);
+}
+
+/* ─── Navigation ─── */
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;height:56px;
+  background:linear-gradient(to top,rgba(5,5,5,0.95),rgba(5,5,5,0.7));
+  display:flex;align-items:center;justify-content:space-between;padding:0 30px;
+  z-index:100;backdrop-filter:blur(10px);border-top:1px solid var(--border);
+}
+.nav-btn{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  color:var(--silver);padding:8px 20px;cursor:pointer;font-size:13px;
+  font-family:var(--font-body);transition:all .2s;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+.nav-btn:disabled:hover{border-color:var(--border);color:var(--silver)}
+.slide-counter{
+  font-family:var(--font-mono);font-size:13px;color:var(--muted);
+  min-width:80px;text-align:center;
+}
+.progress-track{
+  position:fixed;top:0;left:0;right:0;height:3px;background:var(--card2);z-index:100;
+}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .4s ease;border-radius:0 2px 2px 0}
+
+/* ─── RBAC check / x marks ─── */
+.check{color:var(--green);font-weight:700}
+.cross{color:var(--muted)}
+
+/* ─── Two Column ─── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+
+/* Scrollable slide content */
+.slide-scroll{overflow-y:auto;max-height:calc(100vh - 140px);padding-right:10px}
+.slide-scroll::-webkit-scrollbar{width:4px}
+.slide-scroll::-webkit-scrollbar-track{background:transparent}
+.slide-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ─── Animations ─── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.slide.active .anim{animation:fadeInUp .6s ease forwards}
+.slide.active .anim-d1{animation-delay:.1s;opacity:0}
+.slide.active .anim-d2{animation-delay:.2s;opacity:0}
+.slide.active .anim-d3{animation-delay:.3s;opacity:0}
+.slide.active .anim-d4{animation-delay:.4s;opacity:0}
+.slide.active .anim-d5{animation-delay:.5s;opacity:0}
+
+/* ─── Responsive ─── */
+@media(max-width:1024px){
+  .slide{padding:40px 40px}
+  .slide h1{font-size:40px}
+  .title-slide h1{font-size:48px}
+  .grid-2{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .grid-4{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="deck" id="deck">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide title-slide active">
+  <div class="slide-tag anim">SaaS Platform Project</div>
+  <h1 class="anim anim-d1">Rajmudra <em>Fintech</em></h1>
+  <p class="subtitle anim anim-d2">A Secure Full-Stack SaaS Platform for Forex Trading Education</p>
+  <p class="tagline anim anim-d3">"Trade with the Precision of Institutions"</p>
+  <div class="tech-pills anim anim-d4">
+    <span class="tech-pill">React.js</span>
+    <span class="tech-pill">Node.js</span>
+    <span class="tech-pill">Express.js</span>
+    <span class="tech-pill">MongoDB</span>
+    <span class="tech-pill">JWT Auth</span>
+    <span class="tech-pill">REST API</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 2 — ABOUT
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Context</div>
+  <h2 class="anim anim-d1">About the <em>Project</em></h2>
+  <div class="two-col anim anim-d2">
+    <div>
+      <ul>
+        <li><strong>Project Type:</strong> Full-Stack SaaS Web Application</li>
+        <li><strong>Domain:</strong> FinTech × EdTech — Forex Trading Education</li>
+        <li><strong>Client:</strong> Rajmudra Fintech — a professional forex mentorship academy (Maharashtra, India)</li>
+        <li><strong>Founded by:</strong> Vishal Tompe Patil & Nilesh Thore Patil</li>
+        <li><strong>Experience:</strong> 10+ years each in institutional forex trading</li>
+        <li><strong>Impact:</strong> 500+ students trained across multiple batches</li>
+      </ul>
+    </div>
+    <div class="card gold-border">
+      <div class="card-icon">🎯</div>
+      <h4>Project Goal</h4>
+      <p>Build a complete digital platform to manage students, deliver structured forex courses, host live trading sessions, and audit student trades — all in one secure, role-based SaaS application.</p>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="badge badge-gold">5-Phase Curriculum</span>
+        <span class="badge badge-green">Live Trading</span>
+        <span class="badge badge-blue">Trade Auditing</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 3 — PROBLEM
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Challenge</div>
+  <h2 class="anim anim-d1">The <em>Problem</em></h2>
+  <p class="anim anim-d2" style="margin-bottom:28px">Forex trading education in India is largely unstructured — relying on WhatsApp groups and YouTube videos.</p>
+  <div class="grid-3 anim anim-d3">
+    <div class="card"><div class="card-icon">📱</div><h4>No Central Platform</h4><p>Students scattered across WhatsApp, Telegram, and YouTube with no single hub for learning.</p></div>
+    <div class="card"><div class="card-icon">📊</div><h4>No Progress Tracking</h4><p>No way to track individual student performance, course completion, or trade results at scale.</p></div>
+    <div class="card"><div class="card-icon">🔒</div><h4>No Accountability</h4><p>Students lack tools for trade journaling, audit feedback, and structured mentor communication.</p></div>
+    <div class="card"><div class="card-icon">📹</div><h4>No Live Infra</h4><p>No platform for hosting live trading sessions with screen share, chat, and recordings.</p></div>
+    <div class="card"><div class="card-icon">💳</div><h4>No Payment System</h4><p>Manual payment tracking with no digital membership management or subscription handling.</p></div>
+    <div class="card"><div class="card-icon">🎫</div><h4>No Support System</h4><p>Student issues handled informally — no ticketing system, priority tracking, or resolution workflow.</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 4 — SOLUTION
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Solution</div>
+  <h2 class="anim anim-d1">Our <em>Solution</em></h2>
+  <p class="anim anim-d2" style="margin-bottom:28px">A multi-role SaaS platform with 3 distinct dashboards, enterprise security, and real-time data.</p>
+  <div class="grid-3 anim anim-d3">
+    <div class="card gold-border" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">🎓</div>
+      <h4>User Dashboard</h4>
+      <p style="font-size:12px">Students track progress, journal trades, chat with mentors, submit audits, raise support tickets</p>
+      <div style="margin-top:12px"><span class="badge badge-blue">10 Modules</span></div>
+    </div>
+    <div class="card gold-border" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">👨‍🏫</div>
+      <h4>Admin Dashboard</h4>
+      <p style="font-size:12px">Instructors host live sessions, manage students, review trade audits, post announcements</p>
+      <div style="margin-top:12px"><span class="badge badge-green">7 Modules</span></div>
+    </div>
+    <div class="card gold-border" style="text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">👑</div>
+      <h4>SuperAdmin Dashboard</h4>
+      <p style="font-size:12px">Platform owner manages all users, monitors revenue, handles support, configures platform</p>
+      <div style="margin-top:12px"><span class="badge badge-gold">8 Modules</span></div>
+    </div>
+  </div>
+  <div class="anim anim-d4" style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+    <span class="badge badge-gold">JWT HTTP-Only Cookies</span>
+    <span class="badge badge-gold">bcrypt Hashing</span>
+    <span class="badge badge-gold">Role-Based Access</span>
+    <span class="badge badge-gold">MongoDB Atlas</span>
+    <span class="badge badge-gold">Premium Dark UI</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 5 — TECH STACK
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Stack</div>
+  <h2 class="anim anim-d1">Technology <em>Stack</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <table class="tbl">
+      <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Frontend</strong></td><td>React.js 18 + Vite</td><td>Fast SPA with component architecture</td></tr>
+        <tr><td><strong>Routing</strong></td><td>React Router v6</td><td>Client-side navigation with protected routes</td></tr>
+        <tr><td><strong>State</strong></td><td>React Context API</td><td>Global auth state management</td></tr>
+        <tr><td><strong>HTTP Client</strong></td><td>Axios</td><td>API calls with cookie‑based auth</td></tr>
+        <tr><td><strong>Backend</strong></td><td>Node.js + Express.js</td><td>RESTful API server</td></tr>
+        <tr><td><strong>Database</strong></td><td>MongoDB + Mongoose</td><td>NoSQL document store with schema validation</td></tr>
+        <tr><td><strong>Auth</strong></td><td>JWT + bcryptjs</td><td>Secure token‑based authentication</td></tr>
+        <tr><td><strong>Validation</strong></td><td>express-validator</td><td>Server-side input validation</td></tr>
+        <tr><td><strong>Security</strong></td><td>Helmet, CORS, XSS, Mongo Sanitize</td><td>Defense-in-depth middleware chain</td></tr>
+        <tr><td><strong>Styling</strong></td><td>Vanilla CSS (72KB+ custom)</td><td>Premium dark theme with gold accents</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 6 — ARCHITECTURE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Architecture</div>
+  <h2 class="anim anim-d1">System <em>Architecture</em></h2>
+  <div class="anim anim-d2" style="display:flex;flex-direction:column;gap:16px;max-width:900px">
+    <!-- Frontend Layer -->
+    <div class="card gold-border" style="text-align:center">
+      <div style="font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px">Frontend — Port 5173</div>
+      <div style="font-size:14px;color:var(--white);font-weight:600">React.js + Vite</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">Landing Page · Login · Register · 3 Role-Based Dashboards</div>
+    </div>
+    <div style="text-align:center;color:var(--gold);font-size:12px">▼ Axios (withCredentials: true) · HTTP-only Cookie (rm_token) ▼</div>
+    <!-- Middleware Chain -->
+    <div class="card" style="text-align:center">
+      <div style="font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px">Backend — Port 5000</div>
+      <div style="font-size:14px;color:var(--white);font-weight:600;margin-bottom:8px">Node.js + Express.js</div>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+        <span class="badge badge-gold">Helmet</span><span style="color:var(--gold)">→</span>
+        <span class="badge badge-gold">CORS</span><span style="color:var(--gold)">→</span>
+        <span class="badge badge-gold">JSON Parser</span><span style="color:var(--gold)">→</span>
+        <span class="badge badge-gold">Cookies</span><span style="color:var(--gold)">→</span>
+        <span class="badge badge-gold">Sanitize</span><span style="color:var(--gold)">→</span>
+        <span class="badge badge-gold">Rate Limit</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted)">8 Route Modules: auth · users · stats · messages · tickets · journal · audits · announcements</div>
+    </div>
+    <div style="text-align:center;color:var(--gold);font-size:12px">▼ Mongoose ODM ▼</div>
+    <!-- Database -->
+    <div class="card" style="text-align:center">
+      <div style="font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px">Database — Port 27017</div>
+      <div style="font-size:14px;color:var(--white);font-weight:600;margin-bottom:8px">MongoDB</div>
+      <div style="font-size:11px;color:var(--muted)">7 Collections: Users · Messages · SupportTickets · TradeEntries · TradeAudits · Announcements · BlacklistedTokens</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 7 — DATABASE DESIGN
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Data</div>
+  <h2 class="anim anim-d1">Database <em>Schema</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <table class="tbl">
+      <thead><tr><th>Collection</th><th>Key Fields</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Users</strong></td><td>name, email, password (bcrypt), role, batch, hasPaid, activeSessions[], loginAttempts, lockUntil</td><td>Accounts with session tracking & brute-force protection</td></tr>
+        <tr><td><strong>Messages</strong></td><td>sender, receiver, text, read, timestamps</td><td>Real-time mentor-student messaging</td></tr>
+        <tr><td><strong>SupportTickets</strong></td><td>ticketId (auto TK-001), user, category, subject, status, priority, resolution</td><td>Support ticket lifecycle</td></tr>
+        <tr><td><strong>TradeEntries</strong></td><td>user, pair, direction, entryPrice, lotSize, SL, TP, result, pnl, note</td><td>Student trade journal</td></tr>
+        <tr><td><strong>TradeAudits</strong></td><td>user, pair, analysis, status, reviewer, feedback, reviewedAt</td><td>Instructor-reviewed trades</td></tr>
+        <tr><td><strong>Announcements</strong></td><td>title, body, priority, postedBy, visibleTo[]</td><td>Role-targeted broadcasts</td></tr>
+        <tr><td><strong>BlacklistedTokens</strong></td><td>token, expiresAt (TTL)</td><td>Secure logout via token invalidation</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 8 — SECURITY
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Security</div>
+  <h2 class="anim anim-d1">Security <em>Architecture</em></h2>
+  <p class="anim anim-d2" style="margin-bottom:20px">7-layer defense-in-depth security implementation</p>
+  <div class="grid-2 anim anim-d3">
+    <div>
+      <div class="card" style="margin-bottom:12px"><h4>🔐 Authentication</h4><p>JWT in HTTP-only cookies · SameSite: strict · Secure in production · 24h expiry</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>🔑 Password Security</h4><p>bcrypt with 12 salt rounds · Never returned in API responses (select: false)</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>🛡 Brute-Force Protection</h4><p>5 failed attempts → 15min lockout · Counter resets on success</p></div>
+      <div class="card"><h4>📱 Session Management</h4><p>Max 3 concurrent sessions · Oldest evicted on 4th login · Token blacklisting on logout</p></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px"><h4>🧹 Input Sanitization</h4><p>MongoDB injection prevention (strips $ and . operators) · XSS prevention (recursive string sanitization)</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>⏱ Rate Limiting</h4><p>API-level rate limiter on all /api routes · Separate login & register limiters</p></div>
+      <div class="card"><h4>🪖 HTTP Headers</h4><p>Helmet.js — Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, and more</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 9 — AUTH FLOW
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Flow</div>
+  <h2 class="anim anim-d1">Authentication <em>Flow</em></h2>
+  <div class="anim anim-d2" style="display:flex;flex-direction:column;gap:10px;max-width:850px">
+    <div class="flow">
+      <div class="flow-step highlight">User enters email + password</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">POST /api/auth/login</div>
+    </div>
+    <div class="flow">
+      <div class="flow-step">Validate input</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Find user in DB</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Check lock status</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">bcrypt compare</div>
+    </div>
+    <div class="flow">
+      <div class="flow-step">Reset login attempts</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Enforce 3 session limit</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight">Generate JWT {id, role, sessionId}</div>
+    </div>
+    <div class="flow">
+      <div class="flow-step highlight">Set HTTP-only cookie "rm_token"</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Return {success, user}</div>
+    </div>
+    <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:16px">
+      <div style="font-size:13px;color:var(--silver);margin-bottom:10px"><strong style="color:var(--gold)">Role-Based Redirect:</strong></div>
+      <div class="flow">
+        <div class="flow-step" style="border-color:rgba(201,168,76,0.4)">superadmin → /superadmin</div>
+        <div class="flow-step" style="border-color:rgba(46,204,113,0.4)">admin → /admin</div>
+        <div class="flow-step" style="border-color:rgba(100,149,237,0.4)">user → /user</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 10 — RBAC
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Access</div>
+  <h2 class="anim anim-d1">Role-Based <em>Access Control</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <table class="tbl">
+      <thead><tr><th>Feature</th><th style="text-align:center">User</th><th style="text-align:center">Admin</th><th style="text-align:center">SuperAdmin</th></tr></thead>
+      <tbody>
+        <tr><td>Personal Dashboard</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td></tr>
+        <tr><td>Course Progress Tracking</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Trade Journal</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Submit Trade Audit</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Mentor Chat</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Host Live Sessions</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Review Trade Audits</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td><td class="cross" style="text-align:center">—</td></tr>
+        <tr><td>Post Announcements</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td><td class="check" style="text-align:center">✓</td></tr>
+        <tr><td>Full User CRUD</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td></tr>
+        <tr><td>Revenue Dashboard</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td></tr>
+        <tr><td>Platform Settings</td><td class="cross" style="text-align:center">—</td><td class="cross" style="text-align:center">—</td><td class="check" style="text-align:center">✓</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:16px;display:flex;gap:20px">
+      <div style="font-size:12px;color:var(--muted)"><strong style="color:var(--gold)">Frontend:</strong> &lt;ProtectedRoute role="admin"&gt; wrapper</div>
+      <div style="font-size:12px;color:var(--muted)"><strong style="color:var(--gold)">Backend:</strong> protect + requireRole() middleware</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 11 — LANDING PAGE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Frontend</div>
+  <h2 class="anim anim-d1">Landing <em>Page</em></h2>
+  <div class="grid-3 anim anim-d2">
+    <div class="card"><div class="card-icon">📈</div><h4>Live Stock Ticker</h4><p>Scrolling marquee — AAPL, MSFT, TSLA, BTC, ETH, Gold, Silver, Oil</p></div>
+    <div class="card"><div class="card-icon">🎬</div><h4>Hero Section</h4><p>Full-screen animated background, brand logo, tagline, dual CTA buttons</p></div>
+    <div class="card"><div class="card-icon">📊</div><h4>Stats Bar</h4><p>5 Phases · 4 Days Live · 100% Dedication · ∞ Audit Support</p></div>
+    <div class="card"><div class="card-icon">⭐</div><h4>6 Highlight Cards</h4><p>"What Sets Us Apart" — animated numbered cards with SVG icons</p></div>
+    <div class="card"><div class="card-icon">📚</div><h4>5-Phase Syllabus</h4><p>Foundation → Technical → Advanced → Risk Mgmt → Execution & Audit</p></div>
+    <div class="card"><div class="card-icon">👨‍🏫</div><h4>Mentor Profiles</h4><p>Dual mentor cards with WhatsApp contact links & credentials</p></div>
+    <div class="card"><div class="card-icon">💬</div><h4>Testimonials</h4><p>3 success stories with avatars — Madhav, Abhishek, Prashil</p></div>
+    <div class="card"><div class="card-icon">📞</div><h4>Contact Section</h4><p>Phone, email, WhatsApp DM keyword "TRADER"</p></div>
+    <div class="card"><div class="card-icon">🎨</div><h4>Premium Design</h4><p>Dark theme, gold accents, Playfair + Montserrat typography</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 12 — USER DASHBOARD
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Dashboard</div>
+  <h2 class="anim anim-d1">User Dashboard — <em>10 Modules</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <div class="grid-2" style="gap:12px">
+      <div class="card"><h4>📊 My Progress</h4><p>Batch info, batchmates count, plan status, live announcements feed</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>📚 Course Phases</h4><p>Expandable 5-phase accordion with progress bars and topic tags</p><span class="badge badge-blue" style="margin-top:8px">Interactive</span></div>
+      <div class="card"><h4>💡 Daily Analysis</h4><p>Expert market breakdowns by mentors with chart images</p><span class="badge badge-gold" style="margin-top:8px">Mentor Content</span></div>
+      <div class="card"><h4>📹 Live Sessions</h4><p>Join active sessions, upcoming schedule, past recordings</p><span class="badge badge-gold" style="margin-top:8px">WebRTC</span></div>
+      <div class="card"><h4>📈 Trade Journal</h4><p>Full CRUD — log pair, direction, entry, SL, TP, P&L, notes</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>🔍 Trade Audit</h4><p>Submit trades for review, track status (Pending → Approved)</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>💬 Mentor Chat</h4><p>Real-time messaging with 5s polling, conversation sidebar</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>🎫 Support Tickets</h4><p>Create by category, track status, video call option</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>👤 Profile & KYC</h4><p>Edit profile, 5-step KYC (Aadhaar, PAN, Bank, Video, Approval)</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>💳 Pricing Plans</h4><p>₹14,999 Self-Paced / ₹29,999 Mentorship with Cashfree</p><span class="badge badge-gold" style="margin-top:8px">Payment Ready</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 13 — ADMIN DASHBOARD
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Dashboard</div>
+  <h2 class="anim anim-d1">Admin Dashboard — <em>7 Modules</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <div class="grid-2" style="gap:12px">
+      <div class="card"><h4>📊 Overview</h4><p>Student count, session stats, ratings, batch breakdown chart from MongoDB aggregation</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>👥 My Students</h4><p>Searchable roster with name, email, batch, payment status — debounced search</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>📹 Host Live Session</h4><p>Screen sharing via getDisplayMedia(), live viewer count, room code, chat panel</p><span class="badge badge-gold" style="margin-top:8px">WebRTC</span></div>
+      <div class="card"><h4>📚 Course Content</h4><p>Manage 5 phases — topic counts, video counts, completion rates</p><span class="badge badge-blue" style="margin-top:8px">Management</span></div>
+      <div class="card"><h4>📝 Trade Audits</h4><p>Review student submissions — Approve or flag "Needs Improvement" with feedback</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>📣 Announcements</h4><p>Create/delete with target audience (All / Students / Admins)</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>💬 Student Messages</h4><p>Conversation-style messaging with all students, 5-second polling</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 14 — SUPERADMIN DASHBOARD
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Dashboard</div>
+  <h2 class="anim anim-d1">SuperAdmin Dashboard — <em>8 Modules</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <div class="grid-2" style="gap:12px">
+      <div class="card"><h4>📊 Platform Overview</h4><p>Total users, admins, revenue, conversion rate, monthly growth chart, recent registrations</p><span class="badge badge-green" style="margin-top:8px">MongoDB Aggregate</span></div>
+      <div class="card"><h4>👑 User Management</h4><p>Full CRUD — search, toggle paid/free plan, delete accounts</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>🏫 Admin Management</h4><p>Instructor profiles, specializations, session counts, video call</p><span class="badge badge-blue" style="margin-top:8px">Management</span></div>
+      <div class="card"><h4>📹 Session Monitor</h4><p>Observe active sessions, viewer counts, upcoming schedule</p><span class="badge badge-gold" style="margin-top:8px">Monitoring</span></div>
+      <div class="card"><h4>🔧 Support Tickets</h4><p>All tickets across users — Open → In Progress → Resolved workflow</p><span class="badge badge-green" style="margin-top:8px">Live MongoDB</span></div>
+      <div class="card"><h4>💰 Revenue & Payments</h4><p>Monthly trends, annual revenue, enrollments, avg fee, transactions</p><span class="badge badge-gold" style="margin-top:8px">Analytics</span></div>
+      <div class="card"><h4>📋 Course Management</h4><p>Phase-wise enrollment, completion percentages across batches</p><span class="badge badge-blue" style="margin-top:8px">Content</span></div>
+      <div class="card"><h4>⚙️ Platform Settings</h4><p>Cashfree API keys, system status, push notifications, platform config</p><span class="badge badge-gold" style="margin-top:8px">Configuration</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 15 — API DESIGN
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Backend</div>
+  <h2 class="anim anim-d1">RESTful <em>API Design</em></h2>
+  <div class="slide-scroll anim anim-d2">
+    <table class="tbl">
+      <thead><tr><th>Route Group</th><th>Key Endpoints</th><th>Auth</th></tr></thead>
+      <tbody>
+        <tr><td><strong>/api/auth</strong></td><td>POST /register · POST /login · POST /logout · GET /me</td><td><span class="badge badge-blue">Public + Protected</span></td></tr>
+        <tr><td><strong>/api/users</strong></td><td>GET / (search) · GET /me · PUT /me · PUT /:id · DELETE /:id</td><td><span class="badge badge-gold">Protected + RBAC</span></td></tr>
+        <tr><td><strong>/api/stats</strong></td><td>GET /user · GET /admin · GET /superadmin</td><td><span class="badge badge-gold">Protected + RBAC</span></td></tr>
+        <tr><td><strong>/api/messages</strong></td><td>GET /conversations · GET /:partnerId · POST /:partnerId</td><td><span class="badge badge-green">Protected</span></td></tr>
+        <tr><td><strong>/api/tickets</strong></td><td>GET / · POST / · PUT /:id</td><td><span class="badge badge-green">Protected</span></td></tr>
+        <tr><td><strong>/api/journal</strong></td><td>GET / · POST / · DELETE /:id</td><td><span class="badge badge-green">Protected</span></td></tr>
+        <tr><td><strong>/api/audits</strong></td><td>GET / · POST / · PUT /:id/review</td><td><span class="badge badge-gold">Protected + RBAC</span></td></tr>
+        <tr><td><strong>/api/announcements</strong></td><td>GET / · POST / · DELETE /:id</td><td><span class="badge badge-gold">Protected + RBAC</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 16 — KEY FEATURES
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Features</div>
+  <h2 class="anim anim-d1">Key Technical <em>Features</em></h2>
+  <div class="grid-2 anim anim-d2">
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <h4>💬 Real-Time Messaging</h4>
+        <p>MongoDB-backed conversations with 5-second polling, unread counters, auto-refresh conversation list</p>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <h4>📈 Trade Journal (CRUD)</h4>
+        <p>Log: pair, direction, entry, lot size, SL, TP, result, P&L, notes · Delete with confirmation · Sorted by recent</p>
+      </div>
+      <div class="card">
+        <h4>📹 Live Session Broadcasting</h4>
+        <p>WebRTC getDisplayMedia() · Live viewer count · Room code · Session recording toggle</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <h4>🔍 Trade Audit Workflow</h4>
+        <div style="margin-top:8px">
+          <div class="flow" style="gap:6px">
+            <div class="flow-step" style="font-size:11px;padding:6px 10px">Submit</div>
+            <div class="flow-arrow" style="font-size:14px">→</div>
+            <div class="flow-step" style="font-size:11px;padding:6px 10px">Pending</div>
+            <div class="flow-arrow" style="font-size:14px">→</div>
+            <div class="flow-step" style="font-size:11px;padding:6px 10px">In Review</div>
+            <div class="flow-arrow" style="font-size:14px">→</div>
+            <div class="flow-step highlight" style="font-size:11px;padding:6px 10px">Approved ✓</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <h4>📣 Announcement System</h4>
+        <p>Target: All / Students / Admins · Priority levels (High/Medium/Low) · CRUD with real-time creation</p>
+      </div>
+      <div class="card">
+        <h4>🎫 Support Ticket System</h4>
+        <p>Auto-generated TK-001 IDs · Categories: Technical, Software, Payment, Content · Status workflow with video call</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 17 — FRONTEND ARCHITECTURE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Code</div>
+  <h2 class="anim anim-d1">Frontend <em>Architecture</em></h2>
+  <div class="two-col anim anim-d2">
+    <div class="code-block" style="font-size:11px;line-height:1.6">
+<span class="cm">src/</span>
+├── main.jsx
+├── App.jsx              <span class="cm">← Router + AuthProvider</span>
+├── <span class="kw">context/</span>
+│   └── AuthContext.jsx   <span class="cm">← Global auth state</span>
+├── <span class="kw">api/</span>
+│   ├── client.js         <span class="cm">← Axios + 401 interceptor</span>
+│   ├── auth.js           <span class="cm">← login, register, logout</span>
+│   ├── stats.js          <span class="cm">← Dashboard data</span>
+│   ├── users.js          <span class="cm">← User CRUD</span>
+│   ├── messages.js       <span class="cm">← Chat system</span>
+│   ├── tickets.js        <span class="cm">← Support tickets</span>
+│   ├── journal.js        <span class="cm">← Trade journal</span>
+│   └── audits.js         <span class="cm">← Trade audits</span>
+├── <span class="kw">components/</span>
+│   ├── ProtectedRoute.jsx
+│   ├── Sidebar.jsx
+│   ├── Topbar.jsx
+│   ├── VideoModal.jsx
+│   └── PricingPlans.jsx
+└── <span class="kw">pages/</span>
+    ├── LandingPage.jsx    <span class="cm">← 498 lines</span>
+    ├── LoginPage.jsx
+    ├── RegisterPage.jsx
+    ├── <span class="kw">user/</span>UserDashboard     <span class="cm">← 848 lines</span>
+    ├── <span class="kw">admin/</span>AdminDashboard   <span class="cm">← 726 lines</span>
+    └── <span class="kw">superadmin/</span>SuperAdmin <span class="cm">← 554 lines</span></div>
+    <div>
+      <div class="grid-2" style="gap:12px">
+        <div class="stat"><div class="stat-value">3,200+</div><div class="stat-label">Lines of React JSX</div></div>
+        <div class="stat"><div class="stat-value">72KB+</div><div class="stat-label">Custom CSS</div></div>
+        <div class="stat"><div class="stat-value">8</div><div class="stat-label">API Modules</div></div>
+        <div class="stat"><div class="stat-value">5</div><div class="stat-label">Reusable Components</div></div>
+        <div class="stat"><div class="stat-value">25+</div><div class="stat-label">Feature Sub-Pages</div></div>
+        <div class="stat"><div class="stat-value">3</div><div class="stat-label">Role Dashboards</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 18 — DEMO
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Demo</div>
+  <h2 class="anim anim-d1">Live <em>Demo</em></h2>
+  <div class="two-col anim anim-d2">
+    <div>
+      <h3 style="margin-bottom:16px">Demo <em>Accounts</em></h3>
+      <table class="tbl">
+        <thead><tr><th>Role</th><th>Email</th><th>Password</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-gold">SuperAdmin</span></td><td>superadmin@rajmudra.com</td><td>admin123</td></tr>
+          <tr><td><span class="badge badge-green">Admin</span></td><td>vishal@rajmudra.com</td><td>admin123</td></tr>
+          <tr><td><span class="badge badge-blue">User</span></td><td>trader@example.com</td><td>user12345</td></tr>
+        </tbody>
+      </table>
+      <div class="code-block" style="margin-top:20px;font-size:11px">
+<span class="cm"># Terminal 1 — Backend</span>
+<span class="kw">cd</span> rajmudra-server
+<span class="fn">npm install</span> && <span class="fn">node seed.js</span> && <span class="fn">node index.js</span>
+
+<span class="cm"># Terminal 2 — Frontend</span>
+<span class="kw">cd</span> rajmudra-app
+<span class="fn">npm install</span> && <span class="fn">npm run dev</span></div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:16px">Demo <em>Flow</em></h3>
+      <ul>
+        <li><strong>Step 1:</strong> Visit landing page — explore syllabus, mentor profiles, testimonials</li>
+        <li><strong>Step 2:</strong> Login as <strong style="color:var(--blue)">Student</strong> — view progress, log trade, submit audit, message mentor</li>
+        <li><strong>Step 3:</strong> Login as <strong style="color:var(--green)">Admin</strong> — view roster, review audit, post announcement, host live session</li>
+        <li><strong>Step 4:</strong> Login as <strong style="color:var(--gold)">SuperAdmin</strong> — see revenue, manage users, resolve tickets, configure platform</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 19 — FUTURE SCOPE
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-tag anim">Roadmap</div>
+  <h2 class="anim anim-d1">Future <em>Scope</em></h2>
+  <div class="grid-2 anim anim-d2">
+    <div>
+      <div class="card" style="margin-bottom:12px"><h4>🔌 WebSocket Integration</h4><p>Replace polling with Socket.io for instant real-time messaging</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>💳 Cashfree Payment Gateway</h4><p>Complete integration for live payment processing & subscriptions</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>📱 React Native Mobile App</h4><p>Cross-platform mobile app for on-the-go learning</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>🔐 OAuth 2.0</h4><p>Real Google & Facebook social login integration</p></div>
+      <div class="card"><h4>📊 TradingView Widget</h4><p>Embeddable live charts inside the dashboard</p></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px"><h4>🤖 AI Trade Analysis</h4><p>Auto-analysis of submitted trades using ML models</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>📧 Email Notifications</h4><p>Nodemailer for ticket updates and announcement alerts</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>☁️ Cloud Deployment</h4><p>AWS/Vercel with CI/CD pipeline for production</p></div>
+      <div class="card" style="margin-bottom:12px"><h4>📹 WebRTC Peer-to-Peer</h4><p>Full video conferencing beyond screen share</p></div>
+      <div class="card"><h4>🧪 Automated Testing</h4><p>Jest + React Testing Library + Supertest for API</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SLIDE 20 — CONCLUSION
+═══════════════════════════════════════════════════════════════════════════ -->
+<div class="slide title-slide">
+  <div class="slide-tag anim">Summary</div>
+  <h2 class="anim anim-d1" style="font-size:42px">Key <em>Takeaways</em></h2>
+  <div class="anim anim-d2" style="text-align:left;max-width:750px;margin:0 auto">
+    <ul style="gap:14px">
+      <li><strong>Production-grade SaaS platform</strong> built from scratch using the MERN stack</li>
+      <li><strong>Enterprise security:</strong> JWT cookies, bcrypt, RBAC, sanitization, rate limiting, session management</li>
+      <li><strong>3 role-based dashboards</strong> with 25+ feature modules</li>
+      <li><strong>7 MongoDB collections</strong> with Mongoose schema validation</li>
+      <li><strong>8 RESTful API modules</strong> with proper middleware chain</li>
+      <li><strong>72KB+ custom CSS</strong> — premium dark theme with gold accents</li>
+      <li><strong>Real-world application</strong> for an actual forex academy with 500+ students</li>
+    </ul>
+  </div>
+  <p class="tagline anim anim-d3" style="margin-top:32px;max-width:700px">"This project demonstrates full-stack proficiency in modern web development — from database design to API security to pixel-perfect UI."</p>
+  <div class="anim anim-d4" style="margin-top:28px;font-size:14px;color:var(--muted)">Thank You</div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ═══ Navigation Bar ═══ -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+  <div class="slide-counter" id="slideCounter">1 / 20</div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const counter = document.getElementById('slideCounter');
+const progress = document.getElementById('progressFill');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function showSlide(index) {
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+    if (i === index) s.classList.add('active');
+    else if (i < index) s.classList.add('prev');
+  });
+  counter.textContent = `${index + 1} / ${total}`;
+  progress.style.width = `${((index + 1) / total) * 100}%`;
+  prevBtn.disabled = index === 0;
+  nextBtn.disabled = index === total - 1;
+}
+
+function changeSlide(dir) {
+  const next = current + dir;
+  if (next >= 0 && next < total) { current = next; showSlide(current); }
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); changeSlide(-1); }
+  if (e.key === 'Home') { current = 0; showSlide(0); }
+  if (e.key === 'End') { current = total - 1; showSlide(current); }
+});
+
+// Touch swipe
+let touchX = 0;
+document.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend', e => {
+  const diff = touchX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+});
+
+showSlide(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "rajmudra-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rajmudra Fintech – runs both frontend and backend together",
+  "scripts": {
+    "dev": "npx -y concurrently -n SERVER,APP -c cyan,yellow \"npm run dev --prefix rajmudra-server\" \"npm run dev --prefix rajmudra-app\"",
+    "server": "npm run dev --prefix rajmudra-server",
+    "app": "npm run dev --prefix rajmudra-app",
+    "seed": "npm run seed --prefix rajmudra-server"
+  }
+}
